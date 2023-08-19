@@ -1,5 +1,5 @@
-{{- if .Values.server.autoscaling.enabled -}}
-apiVersion: autoscaling/v1
+{{- if .Values.server.cpuAutoscaling.enabled -}}
+apiVersion: Autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ template "trino.worker" . }}
@@ -8,11 +8,11 @@ metadata:
     {{- tpl (toYaml .Values.commonLabels) . | nindent 4 }}
   {{- end }}
 spec:
-  maxReplicas: {{ .Values.server.autoscaling.maxReplicas }}
+  maxReplicas: {{ .Values.server.cpuAutoscaling.maxReplicas }}
   minReplicas: {{ .Values.server.workers }}
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ template "trino.worker" . }}
-  targetCPUUtilizationPercentage: {{ .Values.server.autoscaling.targetCPUUtilizationPercentage }}
+  targetCPUUtilizationPercentage: {{ .Values.server.cpuAutoscaling.targetCPUUtilizationPercentage }}
 {{- end }}

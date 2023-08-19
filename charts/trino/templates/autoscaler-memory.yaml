@@ -1,0 +1,24 @@
+{{- if .Values.server.memoryAutoscaling.enabled -}}
+apiVersion: Autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ template "trino.worker" . }}
+  {{- if .Values.commonLabels }}
+  labels:
+    {{- tpl (toYaml .Values.commonLabels) . | nindent 4 }}
+  {{- end }}
+spec:
+  maxReplicas: {{ .Values.server.memoryAutoscaling.maxReplicas }}
+  minReplicas: {{ .Values.server.workers }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ template "trino.worker" . }}
+  metrics:
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: {{ .Values.server.memoryAutoscaling.targetMemoryUtilizationPercentage }}
+{{- end }}

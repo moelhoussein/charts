@@ -40,10 +40,14 @@ server:
     baseDir: "/tmp/trino-local-file-system-exchange-manager"
   workerExtraConfig: ""
   coordinatorExtraConfig: ""
-  autoscaling:
+  cpuAutoscaling:
     enabled: false
     maxReplicas: 5
     targetCPUUtilizationPercentage: 50
+  memoryAutoscaling:
+    enabled: false
+    maxReplicas: 5
+    targetMemoryUtilizationPercentage: 50  
 
 accessControl: {}
   # type: configmap
