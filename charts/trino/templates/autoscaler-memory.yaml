@@ -1,5 +1,5 @@
 {{- if .Values.server.memoryAutoscaling.enabled -}}
-apiVersion: Autoscaling/v2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ template "trino.worker" . }}
